@@ -14,6 +14,14 @@ yarn-error.log*
 # Database files
 database/*.db
 database/*.sqlite
+database/*.db-journal
+database/*.db-wal
+database/*.db-shm
+
+# SQLite temporary files
+*.db-journal
+*.db-wal
+*.db-shm
 
 # Logs
 logs

@@ -6,6 +6,11 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
+    "db:init": "node src/database/init.js",
+    "db:seed": "node src/database/seed.js",
+    "db:seed:clear": "node src/database/seed.js --clear",
+    "db:reset": "node -e \"require('./src/database/init').resetDatabase().then(() => process.exit(0)).catch(e => {console.error(e); process.exit(1);})\"",
+    "db:setup": "npm run db:init && npm run db:seed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": ["client-management", "api", "express", "sqlite"],
