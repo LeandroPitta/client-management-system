@@ -14,14 +14,21 @@
     "test:model": "node src/models/test-client.js",
     "test": "npm run test:model"
   },
-  "keywords": ["client-management", "api", "express", "sqlite"],
+  "keywords": [
+    "client-management",
+    "api",
+    "express",
+    "sqlite"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

@@ -1,6 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./src/config/swagger');
+const apiRoutes = require('./src/routes');
 
 // Load environment variables
 dotenv.config();
@@ -30,7 +33,34 @@ app.use((req, res, next) => {
   next();
 });
 
-// Test endpoint
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: Root endpoint
+ *     description: Basic endpoint to verify the server is running
+ *     tags: [Health]
+ *     responses:
+ *       200:
+ *         description: Server is running successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Backend is running successfully!"
+ *                 timestamp:
+ *                   type: string
+ *                   format: date-time
+ *                 version:
+ *                   type: string
+ *                   example: "1.0.0"
+ */
 app.get('/', (req, res) => {
   res.json({
     success: true,
@@ -50,18 +80,19 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API routes placeholder
-app.get('/api', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Client Management API',
-    version: '1.0.0',
-    endpoints: {
-      health: '/health',
-      clients: '/api/clients (coming soon)'
-    }
-  });
-});
+// Mount API routes
+app.use('/api', apiRoutes);
+
+// Swagger API Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Client Management API Documentation',
+  swaggerOptions: {
+    docExpansion: 'list',
+    filter: true,
+    showRequestDuration: true
+  }
+}));
 
 // 404 handler for undefined routes
 app.use((req, res) => {
@@ -94,7 +125,8 @@ app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
   console.log(`🌐 Server URL: http://localhost:${PORT}`);
   console.log(`🔗 Health check: http://localhost:${PORT}/health`);
-  console.log(`📄 API info: http://localhost:${PORT}/api`);
+  console.log(`📄 API endpoints: http://localhost:${PORT}/api`);
+  console.log(`📚 API Documentation: http://localhost:${PORT}/api-docs`);
   console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🌍 CORS origin: ${CORS_ORIGIN}`);
   console.log('=====================================');

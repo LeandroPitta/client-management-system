@@ -422,6 +422,24 @@ class Client {
       throw new Error('Email address already exists');
     }
   }
+
+  /**
+   * Search clients by name or email
+   * @param {string} searchTerm - Search term for name or email
+   * @param {Object} options - Additional options
+   * @param {number} options.limit - Number of results to return (default: 50)
+   * @returns {Promise<Array>} Array of matching clients
+   */
+  static async search(searchTerm, options = {}) {
+    // Use findAll with search parameter
+    return this.findAll({
+      search: searchTerm,
+      limit: options.limit || 50,
+      page: 1,
+      sortBy: 'name',
+      order: 'ASC'
+    });
+  }
 }
 
 module.exports = Client;
